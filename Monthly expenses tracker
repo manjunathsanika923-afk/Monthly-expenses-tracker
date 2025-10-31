@@ -16,6 +16,48 @@ for row in reader:
 category, amount = row
 if category in expenses:
 expenses[category] = float(amount)
+# expense_manager.py
+
+import matplotlib.pyplot as plt
+from data import categories, expenses
+from storage import save_expenses
+
+def add_expense():
+    print("\nAdd Expense:")
+    for i, category in enumerate(categories, 1):
+        print(f"{i}. {category}")
+    try:
+        choice = int(input("Select category number (1-10): "))
+        if 1 <= choice <= 10:
+            amount = float(input(f"Enter amount for {categories[choice - 1]}: "))
+            expenses[categories[choice - 1]] += amount
+            save_expenses()  # Save after adding
+        else:
+            print("Invalid category selection!")
+    except ValueError:
+        print("Please enter valid numbers.")
+
+def show_expenses():
+    print("\nCurrent Monthly Expenses:")
+    for category, amount in expenses.items():
+        print(f"{category}: ₹{amount:.2f}")
+    print(f"\nTotal Monthly Expense: ₹{sum(expenses.values()):.2f}")
+
+def plot_expenses():
+    non_zero_expenses = {k: v for k, v in expenses.items() if v > 0}
+    if not non_zero_expenses:
+        print("\nNo expenses to display in the chart!")
+        return
+
+    labels = non_zero_expenses.keys()
+    sizes = non_zero_expenses.values()
+
+    plt.figure(figsize=(8, 6))
+    plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
+    plt.title("Monthly Expense Distribution")
+    plt.axis('equal')
+    plt.show()
+
 def add_expense():
 print("\nAdd Expense:")
 for i, category in enumerate(categories, 1):
