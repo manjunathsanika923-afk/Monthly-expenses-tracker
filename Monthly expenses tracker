@@ -72,4 +72,24 @@ else:
 print("Invalid category selection!")
 except ValueError:
 print("Please enter valid numbers.")
+def show_expenses():
+    print("\nCurrent Monthly Expenses:")
+    for category, amount in expenses.items():
+        print(f"{category}: ₹{amount:.2f}")
+    print(f"\nTotal Monthly Expense: ₹{sum(expenses.values()):.2f}")
+
+def plot_expenses():
+    non_zero_expenses = {k: v for k, v in expenses.items() if v > 0}
+    if not non_zero_expenses:
+        print("\nNo expenses to display in the chart!")
+        return
+
+    labels = non_zero_expenses.keys()
+    sizes = non_zero_expenses.values()
+
+    plt.figure(figsize=(8, 6))
+    plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
+    plt.title("Monthly Expense Distribution")
+    plt.axis('equal')
+    plt.show()
 
